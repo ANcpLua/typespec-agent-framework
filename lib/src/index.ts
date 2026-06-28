@@ -4,6 +4,7 @@
 import {
     createTypeSpecLibrary,
     getDoc,
+    paramMessage,
     resolvePath,
     setTypeSpecNamespace,
     type DecoratorContext,
@@ -29,12 +30,25 @@ export const $lib = createTypeSpecLibrary({
             severity: "error",
             messages: { default: "MAF-001: @agent requires a non-empty name" },
         },
+        "duplicate-action-id": {
+            severity: "error",
+            messages: {
+                default: paramMessage`MAF-002: workflow action id '${"id"}' is declared more than once; action ids must be unique`,
+            },
+        },
+        "unknown-action-reference": {
+            severity: "error",
+            messages: {
+                default: paramMessage`MAF-003: action '${"id"}' references unknown action id '${"ref"}' via '${"field"}'; no action with that id exists in the workflow`,
+            },
+        },
     },
     state: {
         agent: { description: "Namespaces marked as MAF prompt agents (@agent)" },
         instructions: { description: "Agent system instructions (@instructions)" },
         model: { description: "Agent model configuration (@model)" },
         tool: { description: "Operations marked as function tools (@tool)" },
+        workflow: { description: "Namespaces marked as MAF declarative workflows (@workflow)" },
     },
 } as const);
 
@@ -75,7 +89,11 @@ export function $tool(context: DecoratorContext, target: Operation): void {
     context.program.stateMap(stateKeys.tool).set(target, true);
 }
 
-setTypeSpecNamespace("AgentFramework", $agent, $instructions, $useModel, $tool);
+export function $workflow(context: DecoratorContext, target: Namespace, spec: unknown): void {
+    context.program.stateMap(stateKeys.workflow).set(target, spec);
+}
+
+setTypeSpecNamespace("AgentFramework", $agent, $instructions, $useModel, $tool, $workflow);
 
 // ---------------------------------------------------------------------------
 // Emitter — dialect D1 (prompt-agent YAML)
@@ -93,17 +111,92 @@ export async function $onEmit(context: EmitContext): Promise<void> {
 
     const program = context.program;
     const agents = [...program.stateMap(stateKeys.agent)] as Array<[Namespace, AgentInfo]>;
-    if (agents.length === 0) return;
+    const workflows = [...program.stateMap(stateKeys.workflow)] as Array<[Namespace, unknown]>;
+    if (agents.length === 0 && workflows.length === 0) return;
 
     await program.host.mkdirp(context.emitterOutputDir);
 
     for (const [ns, info] of agents) {
         const document = buildAgentDocument(program, ns, info);
-        const fileName = `${kebab(info.name)}.agent.yaml`;
         await program.host.writeFile(
-            resolvePath(context.emitterOutputDir, fileName),
+            resolvePath(context.emitterOutputDir, `${kebab(info.name)}.agent.yaml`),
             ensureTrailingNewline(toYaml(document)),
         );
+    }
+
+    for (const [ns, spec] of workflows) {
+        const document = buildWorkflowDocument(spec);
+        if (!document) continue;
+        await program.host.writeFile(
+            resolvePath(context.emitterOutputDir, `${kebab(ns.name)}.workflow.yaml`),
+            ensureTrailingNewline(toYaml(document)),
+        );
+    }
+}
+
+/**
+ * Hard workflow invariants (PRD Law §2: a broken graph is never merely a warning).
+ * Trigger-without-id is already a type error (TriggerSpec.id is required); here we
+ * catch duplicate action ids and unresolved action references — the unknown-reference
+ * defect class that MAF only fails on at load.
+ */
+export function $onValidate(program: Program): void {
+    for (const [ns, spec] of program.stateMap(stateKeys.workflow) as Map<Namespace, unknown>) {
+        const trigger = asRecord(asRecord(spec)?.trigger);
+        if (!trigger) continue;
+
+        const actions = collectActions(trigger.actions);
+        const ids = new Set<string>();
+        for (const action of actions) {
+            const id = typeof action.id === "string" ? action.id : undefined;
+            if (!id) continue;
+            if (ids.has(id)) {
+                reportDiagnostic(program, { code: "duplicate-action-id", target: ns, format: { id } });
+            }
+            ids.add(id);
+        }
+
+        // GotoAction.actionId must reference a declared action id within the workflow.
+        for (const action of actions) {
+            if (action.kind !== "GotoAction") continue;
+            const ref = typeof action.actionId === "string" ? action.actionId : undefined;
+            const id = typeof action.id === "string" ? action.id : "(unnamed)";
+            if (ref && !ids.has(ref)) {
+                reportDiagnostic(program, {
+                    code: "unknown-action-reference",
+                    target: ns,
+                    format: { id, ref, field: "actionId" },
+                });
+            }
+        }
+    }
+}
+
+/** Wraps the authored workflow spec into the `kind: Workflow` document. */
+function buildWorkflowDocument(spec: unknown): Record<string, unknown> | undefined {
+    const record = asRecord(spec);
+    const trigger = asRecord(record?.trigger);
+    if (!trigger) return undefined;
+    return { kind: "Workflow", trigger };
+}
+
+/** Flattens a trigger's actions, recursing into nested `actions` (e.g. Foreach, ConditionGroup). */
+function collectActions(value: unknown): Array<Record<string, unknown>> {
+    const out: Array<Record<string, unknown>> = [];
+    walk(value);
+    return out;
+
+    function walk(node: unknown): void {
+        if (Array.isArray(node)) {
+            for (const item of node) walk(item);
+            return;
+        }
+        const record = asRecord(node);
+        if (!record) return;
+        if (typeof record.kind === "string" && typeof record.id !== "undefined") out.push(record);
+        for (const [key, child] of Object.entries(record)) {
+            if (key === "actions" || key === "elseActions" || key === "conditions") walk(child);
+        }
     }
 }
 

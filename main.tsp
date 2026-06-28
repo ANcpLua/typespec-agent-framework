@@ -22,3 +22,62 @@ namespace WeatherBot {
     unit: string,
   ): string;
 }
+
+// ---------------------------------------------------------------------------
+// D2 sample workflows (PR-3). Each reproduces a Microsoft.Agents.AI.Workflows.
+// Declarative.UnitTests/Workflows/*.yaml fixture from TypeSpec; `npm run compile`
+// emits generated/maf/<name>.workflow.yaml, semantically equivalent to the MAF
+// fixture and loadable via DeclarativeWorkflowBuilder.Build (tests/MafWorkflowRoundTrip).
+// ---------------------------------------------------------------------------
+
+/** Reproduces Workflows/SetVariable.yaml. */
+@workflow(#{
+  trigger: #{
+    kind: "OnConversationStart",
+    id: "my_workflow",
+    actions: #[
+      #{ kind: "SetVariable", id: "set_var", variable: "Local.TestVar", value: "=3" }
+    ],
+  },
+})
+namespace SetVariableWorkflow {}
+
+/** Reproduces Workflows/Goto.yaml. */
+@workflow(#{
+  trigger: #{
+    kind: "OnConversationStart",
+    id: "my_workflow",
+    actions: #[
+      #{ kind: "GotoAction", id: "goto_end", actionId: "end_all" },
+      #{ kind: "SendActivity", id: "send_activity_1", activity: "NEVER 1!" },
+      #{ kind: "SendActivity", id: "send_activity_2", activity: "NEVER 2!" },
+      #{ kind: "SendActivity", id: "send_activity_3", activity: "NEVER 3!" },
+      #{ kind: "EndConversation", id: "end_all" }
+    ],
+  },
+})
+namespace GotoWorkflow {}
+
+/** Reproduces Workflows/LoopContinue.yaml (nested Foreach actions). */
+@workflow(#{
+  trigger: #{
+    kind: "OnConversationStart",
+    id: "my_workflow",
+    actions: #[
+      #{
+        kind: "Foreach",
+        id: "foreach_loop",
+        items: "=[\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"]",
+        index: "Local.LoopIndex",
+        value: "Local.LoopValue",
+        actions: #[
+          #{ kind: "ContinueLoop", id: "continue_loop_now" },
+          #{ kind: "SetVariable", id: "set_variable_inner", variable: "Local.Count", value: "=Local.Count + 1" },
+          #{ kind: "SendActivity", id: "send_activity_inner", activity: "x{Local.Count} - {Local.LoopIndex}:{Local.LoopValue}" }
+        ],
+      },
+      #{ kind: "EndConversation", id: "end_all" }
+    ],
+  },
+})
+namespace LoopContinueWorkflow {}
