@@ -1,9 +1,7 @@
 # typespec-agent-framework — Agent Notes
 
-TypeSpec emitters for the declarative surfaces of Microsoft Agent Framework
-(agents, workflows, hosted manifests), with each emitted agent carrying its
-Telemetry Control Graph declaration from birth. This is the qyl mission on
-Microsoft's agent stack. Full spec: [`docs/PRD.md`](docs/PRD.md).
+TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow
+YAML, verified by round-trip tests against the real MAF loaders.
 
 ## Execution contract (from `docs/PRD.md` §6)
 

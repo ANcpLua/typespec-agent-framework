@@ -1,7 +1,7 @@
 {
   "name": "@ancplua/typespec-maf",
   "version": "0.0.0",
-  "description": "TypeSpec emitters for the declarative surfaces of Microsoft Agent Framework (agents, workflows, hosted manifests), with telemetry declared at birth.",
+  "description": "TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow YAML.",
   "type": "module",
   "main": "dist/index.js",
   "tspMain": "lib/main.tsp",

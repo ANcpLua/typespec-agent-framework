@@ -19,11 +19,12 @@ import {
 import { stringify as toYaml } from "yaml";
 
 /**
- * `@ancplua/typespec-maf` — TypeSpec authoring surface and emitters for the
- * declarative surfaces of Microsoft Agent Framework. PR-1 ships dialect D1
- * (prompt-agent YAML): the `@agent` / `@instructions` / `@model` / `@tool`
- * decorators and the `maf-agent-yaml` emitter, gated by a .NET round-trip
- * through the real `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
+ * `@ancplua/typespec-maf` — TypeSpec decorators and emitters that produce Microsoft
+ * Agent Framework declarative YAML: prompt agents (D1 — `@agent` / `@instructions` /
+ * `@useModel` / `@tool` → maf-agent-yaml) and workflows (D2 — `@workflow` →
+ * maf-workflow-yaml). Every artifact is gated by a .NET round-trip through the real
+ * MAF loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync`,
+ * `DeclarativeWorkflowBuilder.Build`).
  */
 export const $lib = createTypeSpecLibrary({
     name: "@ancplua/typespec-maf",
