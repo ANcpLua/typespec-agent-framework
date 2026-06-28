@@ -6,9 +6,8 @@ namespace AgentFramework;
 
 /**
  * Declares a namespace as a Microsoft Agent Framework prompt agent (dialect D1).
- * `tsp compile` emits a `kind: Prompt` agent YAML loadable through the real
- * `ChatClientPromptAgentFactory.CreateFromYamlAsync` (PRD Law §3: round-trip or
- * it doesn't ship).
+ * `tsp compile` emits a `kind: Prompt` agent YAML loadable through Microsoft's
+ * `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
  *
  * @param name The agent name (D1 `name:`).
  * @param description Optional agent description (D1 `description:`).
@@ -63,8 +62,8 @@ model ModelOptions {
 
 /**
  * Declares a namespace as a Microsoft Agent Framework declarative workflow
- * (dialect D2). `tsp compile` emits a `kind: Workflow` YAML loadable through the
- * real `DeclarativeWorkflowBuilder.Build` (PRD Law §3). Action shapes are the
+ * (dialect D2). `tsp compile` emits a `kind: Workflow` YAML loadable through
+ * Microsoft's `DeclarativeWorkflowBuilder.Build`. Action shapes are the
  * generated `AgentFramework.Actions.*` models (PR-2); `$onValidate` enforces the
  * hard invariants (unique ids, references resolve).
  */

@@ -22,8 +22,8 @@ import { stringify as toYaml } from "yaml";
  * `@ancplua/typespec-maf` — TypeSpec decorators and emitters that produce Microsoft
  * Agent Framework declarative YAML: prompt agents (D1 — `@agent` / `@instructions` /
  * `@useModel` / `@tool` → maf-agent-yaml) and workflows (D2 — `@workflow` →
- * maf-workflow-yaml). Every artifact is gated by a .NET round-trip through the real
- * MAF loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync`,
+ * maf-workflow-yaml). Every artifact is gated by a .NET round-trip through Microsoft's
+ * own loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync`,
  * `DeclarativeWorkflowBuilder.Build`).
  */
 export const $lib = createTypeSpecLibrary({

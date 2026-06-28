@@ -6,8 +6,8 @@
 
 TypeSpec decorators and emitters that turn a `.tsp` source into Microsoft Agent
 Framework's declarative YAML — prompt agents (D1) and workflows (D2). Every
-emitted artifact is gated by a round-trip test that loads it through the **real**
-MAF loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync` for agents,
+emitted artifact is gated by a round-trip test that loads it through Microsoft's
+own loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync` for agents,
 `DeclarativeWorkflowBuilder.Build` for workflows), so what this produces is YAML
 MAF actually accepts.
 
@@ -20,7 +20,7 @@ for M365 Copilot; this applies the same idea to the Agent Framework.
 ## What works
 
 - **D1 — prompt-agent YAML.** `@agent` / `@instructions` / `@useModel` / `@tool`
-  compile to `kind: Prompt` YAML that loads through the real
+  compile to `kind: Prompt` YAML that loads through Microsoft's
   `ChatClientPromptAgentFactory.CreateFromYamlAsync`. Output is deterministic
   across compiles.
 - **Generated D2 action shapes.** `tools/maf-model-gen` reflects over the pinned
@@ -29,7 +29,7 @@ for M365 Copilot; this applies the same idea to the Agent Framework.
   spot-checked against Microsoft's own `Workflows/*.yaml` tests.
 - **D2 — workflow YAML.** `@workflow` compiles to `kind: Workflow` YAML. The sample
   workflows reproduce MAF's `SetVariable` / `Goto` / `LoopContinue` fixtures
-  (parsed-tree equivalent) and build through the real `DeclarativeWorkflowBuilder.Build`.
+  (parsed-tree equivalent) and build through Microsoft's `DeclarativeWorkflowBuilder.Build`.
 - **Reference validation.** An unresolved action reference (`MAF-003`) or an
   undeclared PowerFx variable (`MAF-004`) is a compile error, where raw MAF only
   fails at load. A configurable `powerfx-scope` lint rule warns on out-of-policy

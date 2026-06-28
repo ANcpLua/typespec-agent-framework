@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow YAML, verified by round-trip tests against the real MAF loaders.",
+  "description": "TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow YAML, verified by loading the output through Microsoft's own agent and workflow loaders.",
   "license": "MIT",
   "repository": {
     "type": "git",
