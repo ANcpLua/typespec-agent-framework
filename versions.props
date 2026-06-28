@@ -1,0 +1,32 @@
+<Project>
+
+  <!-- ============================================================================
+       Single source of truth for version pins across typespec-agent-framework.
+       (PRD Law §5: version pins everywhere — no floating `latest`, no `-dev` ranges.)
+
+       - TypeSpec / npm toolchain pins are authoritative in package.json; they are
+         mirrored here for the .NET round-trip projects and for humans.
+       - MAF + .NET package pins are authoritative HERE and are consumed by
+         Directory.Packages.props (added with the first .NET round-trip project in
+         PR-1) and Directory.Build.props.
+
+       Ground truth for MAF API shapes: the local source checkout
+       agent-framework-dotnet-rootsource @ 3a9f3480 (2026-06-24); the published
+       Microsoft.Agents.AI.* packages are on nuget.org. Bump = pin here, regenerate,
+       review diff (PRD §2, Law §4/§5).
+       ============================================================================ -->
+
+  <PropertyGroup Label="ToolchainPins">
+    <TypeSpecVersion>1.13.0</TypeSpecVersion>
+    <TypeScriptVersion>6.0.3</TypeScriptVersion>
+    <!-- @ancplua/typespec-otel-semconv — semconv-typed telemetry keys, added in PR-5. -->
+    <OtelSemConvVersion>1.41.0-2</OtelSemConvVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="MafPins">
+    <!-- Microsoft Agent Framework (.NET). PR-1's round-trip test references these. -->
+    <MafPackageVersion>1.11.1</MafPackageVersion>
+    <DotNetTargetFramework>net10.0</DotNetTargetFramework>
+  </PropertyGroup>
+
+</Project>

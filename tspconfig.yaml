@@ -1,0 +1,15 @@
+# typespec-agent-framework TypeSpec configuration.
+#
+# PR-0 scaffold: the `@ancplua/typespec-maf` emitter is a deliberate no-op until
+# PR-1 (maf-agent-yaml, dialect D1). Listing it here makes `npm run compile`
+# load and run the emitter end to end so the toolchain is proven before any real
+# emit logic exists. Per-emitter options follow the @qyl/telemetry-control-graph
+# conventions (file-types, include-*, JSONSchema-declared options) as the
+# emitters land (PRD §3).
+
+emit:
+  - "@ancplua/typespec-maf"
+
+options:
+  "@ancplua/typespec-maf":
+    emitter-output-dir: "{project-root}/generated/maf"
