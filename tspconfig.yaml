@@ -1,0 +1,15 @@
+# typespec-agent-framework TypeSpec configuration: emit Microsoft Agent Framework
+# declarative YAML (agents + workflows) and run the PowerFx scope lint rule.
+
+emit:
+  - "@ancplua/typespec-maf"
+
+options:
+  "@ancplua/typespec-maf":
+    emitter-output-dir: "{project-root}/generated/maf"
+
+linter:
+  # PowerFx scope policy (PR-4): warns when an expression references a variable scope
+  # outside the allowed set. Tune via the rule's `allowedScopes` option.
+  extends:
+    - "@ancplua/typespec-maf/recommended"

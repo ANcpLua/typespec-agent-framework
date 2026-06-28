@@ -1,0 +1,33 @@
+{
+  "name": "@ancplua/typespec-agent-framework",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow YAML, verified by round-trip tests against the real MAF loaders.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANcpLua/typespec-agent-framework.git"
+  },
+  "scripts": {
+    "build:emitters": "tsc -p lib",
+    "compile": "npm run build:emitters && tsp compile main.tsp",
+    "watch": "tsp compile main.tsp --watch",
+    "format": "tsp format \"**/*.tsp\"",
+    "lint": "npm run build:emitters && tsp compile main.tsp --no-emit --warn-as-error",
+    "test": "vitest run --passWithNoTests",
+    "test:roundtrip": "npm run compile && dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml",
+    "gen:actions": "dotnet run --project tools/maf-model-gen -- generated/maf-actions.gen.tsp",
+    "test:actions": "tsp compile generated/maf-actions.gen.tsp --no-emit --warn-as-error && node tools/maf-model-gen/spot-check.mjs",
+    "test:workflows": "npm run compile && node tools/workflow-equiv.mjs && dotnet run --project tests/MafWorkflowRoundTrip",
+    "test:negative": "node tools/negative-eval.mjs",
+    "test:powerfx": "node tools/powerfx-eval.mjs"
+  },
+  "devDependencies": {
+    "@ancplua/typespec-maf": "file:./lib",
+    "@types/node": "25.9.4",
+    "@typespec/compiler": "1.13.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}

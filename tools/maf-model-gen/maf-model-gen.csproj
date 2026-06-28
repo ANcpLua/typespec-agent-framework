@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- maf-model-gen (PRD §P2, PR-2): reflects over the pinned Microsoft.Agents.ObjectModel
+       DialogAction hierarchy and emits generated/maf-actions.gen.tsp. The generated
+       TypeSpec is the source of truth for D2 action shapes — pin bump → regenerate →
+       diff review, never hand-port (Law §4). Inherits net10.0 from Directory.Build.props;
+       ObjectModel version from versions.props. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <NoWarn>$(NoWarn);NU5104;NU1603;NU1701</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Agents.ObjectModel" Version="$(ObjectModelVersion)" />
+  </ItemGroup>
+
+</Project>

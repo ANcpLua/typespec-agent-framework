@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- D1 round-trip gate (PRD Law §3). Inherits net10.0 + Nullable + ImplicitUsings
+       from the repo Directory.Build.props; the MAF Declarative version comes from
+       versions.props. Loads the TypeSpec-emitted YAML through Microsoft's real
+       ChatClientPromptAgentFactory.CreateFromYamlAsync. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Microsoft.Agents.AI.Declarative ships only as a release candidate. -->
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Agents.AI.Declarative" Version="$(MafDeclarativeVersion)" />
+  </ItemGroup>
+
+</Project>

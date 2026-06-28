@@ -1,0 +1,15 @@
+<Project>
+
+  <!-- Shared C# convention baseline for the .NET round-trip / test-harness projects.
+       All version numbers live in versions.props. -->
+
+  <Import Project="versions.props" />
+
+  <PropertyGroup>
+    <TargetFramework>$(DotNetTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
