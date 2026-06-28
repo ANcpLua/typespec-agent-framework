@@ -27,7 +27,8 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
 - [x] **PR-0 — Repo extraction & scaffold.** New repo + empty `@ancplua/typespec-maf`
       lib; `npm run build:emitters && npm run compile` green; README states vision §1
       in 5 sentences; repo private; `docs/PRD.md` committed; qyl copy → pointer stub.
-- [ ] PR-1 — D1 agent YAML slice + `.NET` round-trip via `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
+- [x] PR-1 — D1 agent YAML slice + `.NET` round-trip via `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
+      [Δ: PRD's `@model` → `@useModel` — `model` is a reserved TypeSpec keyword.]
 - [ ] PR-2 — `maf-model-gen` reflection tool → `generated/maf-actions.gen.tsp`.
 - [ ] PR-3 — D2 workflow YAML + reference ids + `powerfx<T>` v0 + `$onValidate` invariants.
 - [ ] PR-4 — PowerFx reference validation (unknown-ref = compile error).
@@ -42,8 +43,17 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
 - 2026-06-28 — Campaign opened. Goal set by PO ("Run to Gold"). PR-0 scaffold written
   (mirrors qyl-api-schema 1:1). Local gate GREEN: `build:emitters` exit 0, `compile`
   "completed successfully" (no-op emitter ran), `lint` warn-as-error clean, README
-  vision = 5 sentences. Creating private repo `ANcpLua/typespec-agent-framework`,
-  opening PR-0, merging once confirmed green. Next: qyl PRD → pointer stub, then PR-1.
+  vision = 5 sentences. PR-0 merged (PR #1); qyl PRD → pointer stub merged (qyl #432).
+- 2026-06-28 — PR-1 (D1) DONE & GREEN. `@agent`/`@instructions`/`@useModel`/`@tool`
+  decorators + `maf-agent-yaml` emitter → `kind: Prompt` YAML matching the MAF
+  `PromptAgents.cs` schema exactly. Round-trip harness `tests/MafRoundTrip` loads it
+  via the REAL `ChatClientPromptAgentFactory.CreateFromYamlAsync` (pkg
+  `Microsoft.Agents.AI.Declarative 1.11.1-rc1` — D1 loader ships rc-only; core is
+  1.11.1). 4/4 assertions pass; YAML byte-stable across 2 compiles (identical SHA256);
+  lint clean. Grounded in MAF source @ 3a9f3480. NOTE: published `ChatClientAgent`
+  hides `ChatOptions` (local-source vs published drift) → harness asserts identity +
+  load-success (a malformed model/tool block throws in CreateFromYamlAsync, so a clean
+  load validates them). Next: PR-2 (maf-model-gen).
 
 ## Branch / PR convention
 
