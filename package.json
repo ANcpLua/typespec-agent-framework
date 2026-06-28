@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "TypeSpec as the single typed source of truth for the declarative surfaces of Microsoft Agent Framework — agents, workflows, hosted manifests — with telemetry declared at birth.",
+  "description": "TypeSpec emitters for Microsoft Agent Framework's declarative agent and workflow YAML, verified by round-trip tests against the real MAF loaders.",
   "license": "MIT",
   "repository": {
     "type": "git",
