@@ -1,0 +1,27 @@
+{
+  "name": "@ancplua/typespec-agent-framework",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeSpec as the single typed source of truth for the declarative surfaces of Microsoft Agent Framework — agents, workflows, hosted manifests — with telemetry declared at birth.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANcpLua/typespec-agent-framework.git"
+  },
+  "scripts": {
+    "build:emitters": "tsc -p lib",
+    "compile": "npm run build:emitters && tsp compile main.tsp",
+    "watch": "tsp compile main.tsp --watch",
+    "format": "tsp format \"**/*.tsp\"",
+    "lint": "npm run build:emitters && tsp compile main.tsp --no-emit --warn-as-error",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@ancplua/typespec-maf": "file:./lib",
+    "@types/node": "25.9.1",
+    "@typespec/compiler": "1.13.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.7"
+  }
+}

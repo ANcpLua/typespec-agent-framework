@@ -1,0 +1,16 @@
+<Project>
+
+  <!-- Shared C# convention baseline for the .NET round-trip / test-harness projects
+       that reference the pinned MAF packages (PR-1+). Mirrors the qyl-api-schema
+       baseline. All version numbers live in versions.props (PRD Law §5). -->
+
+  <Import Project="versions.props" />
+
+  <PropertyGroup>
+    <TargetFramework>$(DotNetTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
