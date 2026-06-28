@@ -16,7 +16,9 @@
     "format": "tsp format \"**/*.tsp\"",
     "lint": "npm run build:emitters && tsp compile main.tsp --no-emit --warn-as-error",
     "test": "vitest run --passWithNoTests",
-    "test:roundtrip": "npm run compile && dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml"
+    "test:roundtrip": "npm run compile && dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml",
+    "gen:actions": "dotnet run --project tools/maf-model-gen -- generated/maf-actions.gen.tsp",
+    "test:actions": "tsp compile generated/maf-actions.gen.tsp --no-emit --warn-as-error && node tools/maf-model-gen/spot-check.mjs"
   },
   "devDependencies": {
     "@ancplua/typespec-maf": "file:./lib",
