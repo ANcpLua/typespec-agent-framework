@@ -41,6 +41,11 @@ reproduce MAF's own `SetVariable` / `Goto` / `LoopContinue` test fixtures
 `DeclarativeWorkflowBuilder.Build`**, and an unresolved action reference is a
 **compile error** (`MAF-003`) where raw MAF only fails at load.
 
+**PR-4 — PowerFx reference validation.** Every `Local.*`/`Topic.*` referenced in a
+PowerFx (`=…`) expression must be declared by some action, else a **compile error**
+(`MAF-004`) — the crash-class conversion, again. A configurable `powerfx-scope` lint
+rule (`allowedScopes` option) warns on out-of-policy scopes.
+
 D3 hosted manifests and telemetry-at-birth land in later PRs. The complete
 maximum-scope plan, the evidence that the gap is real, the laws, and the
 PR-0…PR-10 pipeline live in [`docs/PRD.md`](docs/PRD.md).
@@ -50,6 +55,7 @@ npm run compile          # emit agent + workflow YAML from main.tsp
 npm run test:roundtrip   # D1: load agent YAML through Microsoft's loader (Law §3)
 npm run test:workflows   # D2: semantic-equiv to MAF fixtures + DeclarativeWorkflowBuilder build
 npm run test:negative    # D2: unknown action reference is a compile error (MAF-003)
+npm run test:powerfx     # D2: PowerFx ref matrix — valid / unknown-ref error / policy warning
 npm run gen:actions      # regenerate generated/maf-actions.gen.tsp from the ObjectModel
 npm run test:actions     # compile the generated lib + spot-check action shapes
 ```

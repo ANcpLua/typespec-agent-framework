@@ -20,7 +20,8 @@
     "gen:actions": "dotnet run --project tools/maf-model-gen -- generated/maf-actions.gen.tsp",
     "test:actions": "tsp compile generated/maf-actions.gen.tsp --no-emit --warn-as-error && node tools/maf-model-gen/spot-check.mjs",
     "test:workflows": "npm run compile && node tools/workflow-equiv.mjs && dotnet run --project tests/MafWorkflowRoundTrip",
-    "test:negative": "node tools/negative-eval.mjs"
+    "test:negative": "node tools/negative-eval.mjs",
+    "test:powerfx": "node tools/powerfx-eval.mjs"
   },
   "devDependencies": {
     "@ancplua/typespec-maf": "file:./lib",

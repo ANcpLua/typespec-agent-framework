@@ -13,3 +13,9 @@ emit:
 options:
   "@ancplua/typespec-maf":
     emitter-output-dir: "{project-root}/generated/maf"
+
+linter:
+  # PowerFx scope policy (PR-4): warns when an expression references a variable scope
+  # outside the allowed set. Tune via the rule's `allowedScopes` option.
+  extends:
+    - "@ancplua/typespec-maf/recommended"
