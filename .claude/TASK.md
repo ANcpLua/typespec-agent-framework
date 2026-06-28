@@ -33,7 +33,7 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
 - [x] PR-3 — D2 workflow YAML + reference ids + `$onValidate` invariants.
       [Δ: powerfx<T> deferred to PR-4 (PowerFx ref validation) — kept PR-3 to the D2
       vertical slice + round-trip + negative eval per the "keep the PR small" contract.]
-- [ ] PR-4 — PowerFx reference validation (unknown-ref = compile error).
+- [x] PR-4 — PowerFx reference validation (unknown-ref = compile error). **← Gold clincher**
 - [ ] PR-5 — `@telemetry` + `tcg-fragment` emitter (TCG wire shape) + semconv keys.
 - [ ] PR-6 — D3 hosted manifests (`maf-hosted`).
 - [ ] PR-7 — conformance loop closure (`qyl verify` CLI; uses `Qyl.Api.Contracts`).
@@ -76,6 +76,14 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
   `ResponseAgentProvider`); (3) negative eval — unknown GotoAction ref is a COMPILE
   error MAF-003 (`tools/negative-eval.mjs`), where raw MAF only fails at load. Scripts
   `test:workflows` / `test:negative`. Next: PR-4 (PowerFx reference validation).
+- 2026-06-28 — PR-4 (PowerFx reference validation) DONE & GREEN — **Gold clincher**.
+  `$onValidate` MAF-004: every `Local.*`/`Topic.*` referenced in a `=`-expression must
+  be declared (Set*Variable `variable:`, Foreach `index:`/`value:`). Configurable lint
+  rule `powerfx-scope` (createRule + defineLinter, `allowedScopes` option) warns on
+  out-of-policy scopes; enabled via tspconfig `linter.extends`. Eval matrix
+  (`tools/powerfx-eval.mjs`): valid (main.tsp) passes `--warn-as-error`; unknown ref =
+  MAF-004 compile error; out-of-policy scope = powerfx-scope warning. Script
+  `test:powerfx`. Reaches 1,024 merged → Gold Pull Shark.
 
 ## Branch / PR convention
 

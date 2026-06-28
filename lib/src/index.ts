@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 import {
+    createRule,
     createTypeSpecLibrary,
+    defineLinter,
     getDoc,
     paramMessage,
     resolvePath,
@@ -40,6 +42,12 @@ export const $lib = createTypeSpecLibrary({
             severity: "error",
             messages: {
                 default: paramMessage`MAF-003: action '${"id"}' references unknown action id '${"ref"}' via '${"field"}'; no action with that id exists in the workflow`,
+            },
+        },
+        "unknown-variable-reference": {
+            severity: "error",
+            messages: {
+                default: paramMessage`MAF-004: PowerFx expression references undeclared variable '${"ref"}'; no action declares it in this workflow`,
             },
         },
     },
@@ -169,8 +177,94 @@ export function $onValidate(program: Program): void {
                 });
             }
         }
+
+        // PowerFx: every Local.*/Topic.* referenced in an expression must be declared
+        // by some action in this workflow (MAF-004). Scopes we don't track declarations
+        // for (System, Env, Global, …) are governed by the powerfx-scope lint rule, not here.
+        const declared = collectDeclaredVariables(actions);
+        for (const ref of collectVariableReferences(actions)) {
+            const scope = ref.split(".", 1)[0];
+            if ((scope === "Local" || scope === "Topic") && !declared.has(ref)) {
+                reportDiagnostic(program, { code: "unknown-variable-reference", target: ns, format: { ref } });
+            }
+        }
     }
 }
+
+/** Variable paths an action declares: Set*Variable `variable:`, Foreach `index:`/`value:`. */
+function collectDeclaredVariables(actions: Array<Record<string, unknown>>): Set<string> {
+    const declared = new Set<string>();
+    for (const action of actions) {
+        if (action.kind === "SetVariable" || action.kind === "SetTextVariable" || action.kind === "ResetVariable") {
+            if (typeof action.variable === "string") declared.add(action.variable);
+        }
+        if (action.kind === "Foreach") {
+            if (typeof action.index === "string") declared.add(action.index);
+            if (typeof action.value === "string") declared.add(action.value);
+        }
+    }
+    return declared;
+}
+
+const POWERFX_REF = /\b([A-Z][A-Za-z0-9]*)\.([A-Za-z_][A-Za-z0-9_]*)/g;
+
+/** Scope.Name references found inside PowerFx expressions (`=`-prefixed string values). */
+function collectVariableReferences(actions: Array<Record<string, unknown>>): Set<string> {
+    const refs = new Set<string>();
+    for (const action of actions) {
+        for (const value of Object.values(action)) {
+            if (typeof value !== "string" || !value.startsWith("=")) continue;
+            for (const [match] of value.matchAll(POWERFX_REF)) refs.add(match);
+        }
+    }
+    return refs;
+}
+
+/**
+ * Policy (configurable warning): a PowerFx expression should only reference variable
+ * scopes the project allows. Tunable via the `allowedScopes` rule option.
+ */
+export const powerfxScopeRule = createRule({
+    name: "powerfx-scope",
+    severity: "warning",
+    description: "PowerFx expressions should only reference allowed variable scopes.",
+    messages: {
+        default: paramMessage`PowerFx expression references scope '${"scope"}' which is not in the allowed set (${"allowed"})`,
+    },
+    defaultOptions: {
+        allowedScopes: ["Local", "Topic", "System", "Env", "Global", "Conversation"],
+    },
+    create(context) {
+        return {
+            root: () => {
+                const options = context.options as { allowedScopes: readonly string[] };
+                const allowed = new Set(options.allowedScopes);
+                for (const [ns, spec] of context.program.stateMap(stateKeys.workflow) as Map<Namespace, unknown>) {
+                    const trigger = asRecord(asRecord(spec)?.trigger);
+                    if (!trigger) continue;
+                    for (const ref of collectVariableReferences(collectActions(trigger.actions))) {
+                        const scope = ref.split(".", 1)[0];
+                        if (!allowed.has(scope)) {
+                            context.reportDiagnostic({
+                                format: { scope, allowed: options.allowedScopes.join(", ") },
+                                target: ns,
+                            });
+                        }
+                    }
+                }
+            },
+        };
+    },
+});
+
+export const $linter = defineLinter({
+    rules: [powerfxScopeRule],
+    ruleSets: {
+        recommended: {
+            enable: { [`@ancplua/typespec-maf/${powerfxScopeRule.name}`]: true },
+        },
+    },
+});
 
 /** Wraps the authored workflow spec into the `kind: Workflow` document. */
 function buildWorkflowDocument(spec: unknown): Record<string, unknown> | undefined {
