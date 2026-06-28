@@ -30,7 +30,9 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
 - [x] PR-1 — D1 agent YAML slice + `.NET` round-trip via `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
       [Δ: PRD's `@model` → `@useModel` — `model` is a reserved TypeSpec keyword.]
 - [x] PR-2 — `maf-model-gen` reflection tool → `generated/maf-actions.gen.tsp`.
-- [ ] PR-3 — D2 workflow YAML + reference ids + `powerfx<T>` v0 + `$onValidate` invariants.
+- [x] PR-3 — D2 workflow YAML + reference ids + `$onValidate` invariants.
+      [Δ: powerfx<T> deferred to PR-4 (PowerFx ref validation) — kept PR-3 to the D2
+      vertical slice + round-trip + negative eval per the "keep the PR small" contract.]
 - [ ] PR-4 — PowerFx reference validation (unknown-ref = compile error).
 - [ ] PR-5 — `@telemetry` + `tcg-fragment` emitter (TCG wire shape) + semconv keys.
 - [ ] PR-6 — D3 hosted manifests (`maf-hosted`).
@@ -63,6 +65,17 @@ net10.0 · @ancplua/typespec-otel-semconv `1.41.0-2` (PR-5).
   spot-check pins 15 action shapes (≫ the ≥5 minimum) from MAF's own Workflows/*.yaml;
   byte-deterministic regen. Scripts `gen:actions` / `test:actions`. Next: PR-3 (D2
   workflow YAML emitter — uses these action models).
+- 2026-06-28 — PR-3 (D2 workflow vertical slice) DONE & GREEN. `@workflow` value-based
+  decorator + `WorkflowSpec`/`TriggerSpec`/`ActionSpec` + workflow branch in `$onEmit`
+  + `$onValidate` (MAF-002 duplicate id, MAF-003 unknown ref). 3 sample workflows in
+  main.tsp reproduce MAF's SetVariable/Goto/LoopContinue fixtures. Gates: (1) semantic
+  equivalence to the vendored MAF fixtures (`tools/workflow-equiv.mjs`, parsed-tree —
+  emitted YAML is byte-identical except MAF's hand-authored blank lines, even
+  `value: =3` / `items: =[...]` unquoted); (2) round-trip — all 3 build via the REAL
+  `DeclarativeWorkflowBuilder.Build` (`tests/MafWorkflowRoundTrip`, stub
+  `ResponseAgentProvider`); (3) negative eval — unknown GotoAction ref is a COMPILE
+  error MAF-003 (`tools/negative-eval.mjs`), where raw MAF only fails at load. Scripts
+  `test:workflows` / `test:negative`. Next: PR-4 (PowerFx reference validation).
 
 ## Branch / PR convention
 

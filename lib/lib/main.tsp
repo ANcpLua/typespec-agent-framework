@@ -60,3 +60,36 @@ model ModelOptions {
   presencePenalty?: float32;
   seed?: int64;
 }
+
+/**
+ * Declares a namespace as a Microsoft Agent Framework declarative workflow
+ * (dialect D2). `tsp compile` emits a `kind: Workflow` YAML loadable through the
+ * real `DeclarativeWorkflowBuilder.Build` (PRD Law §3). Action shapes are the
+ * generated `AgentFramework.Actions.*` models (PR-2); `$onValidate` enforces the
+ * hard invariants (unique ids, references resolve).
+ */
+extern dec workflow(target: Namespace, spec: valueof WorkflowSpec);
+
+/** D2 workflow root (`kind: Workflow`). */
+model WorkflowSpec {
+  trigger: TriggerSpec;
+}
+
+/** D2 `trigger:` block. A missing `id` is a compile error (the BadId defect class). */
+model TriggerSpec {
+  kind: string;
+  id: string;
+  actions: ActionSpec[];
+}
+
+/**
+ * A workflow action. Open model: `kind` + `id` are required; action-specific fields
+ * (`variable`, `value`, `actionId`, `activity`, `items`, nested `actions`, …) follow
+ * the generated `AgentFramework.Actions.*` shapes and are emitted as authored. The
+ * emitter and `$onValidate` check ids and references.
+ */
+model ActionSpec {
+  kind: string;
+  id: string;
+  ...Record<unknown>;
+}
