@@ -20,12 +20,23 @@ and that asymmetry is the moat.
 
 ## Status
 
-**PR-0 — scaffold.** The repository, toolchain, and an empty `@ancplua/typespec-maf`
-library are in place; `npm run compile` is green on an empty spec. No emitter
-logic exists yet — the first real dialect (D1, agent YAML) lands in PR-1 with
-its Microsoft-loader round-trip gate. The complete maximum-scope plan, the
-evidence that the gap is real, the laws, and the PR-0…PR-10 pipeline live in
-[`docs/PRD.md`](docs/PRD.md).
+**PR-1 — dialect D1 (prompt-agent YAML) works end to end.** The `@agent` /
+`@instructions` / `@useModel` / `@tool` decorators and the `maf-agent-yaml`
+emitter turn a `.tsp` agent into `kind: Prompt` YAML that loads through
+Microsoft's **real** `ChatClientPromptAgentFactory.CreateFromYamlAsync`
+(`tests/MafRoundTrip`, against `Microsoft.Agents.AI.Declarative`). Output is
+byte-stable across compiles (determinism gate). Dialects D2 (workflows) and D3
+(hosted manifests), the ObjectModel→TypeSpec generator, and telemetry-at-birth
+land in later PRs. The complete maximum-scope plan, the evidence that the gap is
+real, the laws, and the PR-0…PR-10 pipeline live in [`docs/PRD.md`](docs/PRD.md).
+
+```bash
+npm run compile          # emit generated/maf/weather-bot.agent.yaml from main.tsp
+npm run test:roundtrip   # + load it through Microsoft's loader (Law §3)
+```
+
+> Note: the model-config decorator is spelled **`@useModel`**, not `@model` — `model`
+> is a reserved TypeSpec keyword and cannot be a decorator identifier.
 
 ## Develop
 

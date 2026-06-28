@@ -15,7 +15,8 @@
     "watch": "tsp compile main.tsp --watch",
     "format": "tsp format \"**/*.tsp\"",
     "lint": "npm run build:emitters && tsp compile main.tsp --no-emit --warn-as-error",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "test:roundtrip": "npm run compile && dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml"
   },
   "devDependencies": {
     "@ancplua/typespec-maf": "file:./lib",

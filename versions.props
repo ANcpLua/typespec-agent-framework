@@ -24,8 +24,13 @@
   </PropertyGroup>
 
   <PropertyGroup Label="MafPins">
-    <!-- Microsoft Agent Framework (.NET). PR-1's round-trip test references these. -->
+    <!-- Microsoft Agent Framework (.NET). Core packages (Microsoft.Agents.AI,
+         Microsoft.Agents.AI.Workflows.Declarative) ship stable at 1.11.1; the D1
+         prompt-agent loader package (Microsoft.Agents.AI.Declarative) is published
+         only as a release candidate (1.11.1-rc1) — pinned explicitly, NOT a floating
+         range, so it satisfies Law §5. PR-1's round-trip references the Declarative pkg. -->
     <MafPackageVersion>1.11.1</MafPackageVersion>
+    <MafDeclarativeVersion>1.11.1-rc1</MafDeclarativeVersion>
     <DotNetTargetFramework>net10.0</DotNetTargetFramework>
   </PropertyGroup>
 
