@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // D2 round-trip gate (PRD Law §3): each TypeSpec-emitted workflow YAML must build
-// through Microsoft's REAL DeclarativeWorkflowBuilder.Build. Run from the repo root
+// through Microsoft's DeclarativeWorkflowBuilder.Build. Run from the repo root
 // after `npm run compile`:
 //   dotnet run --project tests/MafWorkflowRoundTrip
 

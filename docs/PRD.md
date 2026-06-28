@@ -1,7 +1,8 @@
 # Design & roadmap
 
 `@ancplua/typespec-maf` generates Microsoft Agent Framework (MAF) declarative YAML
-from TypeSpec, and proves the output by loading it through MAF's real loaders.
+from TypeSpec, and proves the output by loading it through Microsoft's own agent
+and workflow loaders.
 
 ## Why
 
@@ -16,8 +17,8 @@ MAF has hand-authored YAML dialects with no typed source:
 Hand-authored, they share the usual failure modes: untyped strings, hand-managed
 ids and cross-references, PowerFx with no compile-time checking, and no schema gate
 before the runtime failure. TypeSpec gives them one typed source: this library
-emits the YAML, and a test loads each artifact through the real loader, so what it
-produces is YAML MAF actually accepts. Microsoft built
+emits the YAML, and a test loads each artifact through Microsoft's own loader, so
+what it produces is YAML MAF actually accepts. Microsoft built
 [`@microsoft/typespec-m365-copilot`](https://www.npmjs.com/package/@microsoft/typespec-m365-copilot)
 for M365 Copilot; this applies the same approach to the Agent Framework.
 

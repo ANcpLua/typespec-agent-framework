@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // D1 round-trip gate (PRD Law §3): the TypeSpec-emitted agent YAML must load
-// through Microsoft's REAL ChatClientPromptAgentFactory.CreateFromYamlAsync.
+// through Microsoft's ChatClientPromptAgentFactory.CreateFromYamlAsync.
 // Run from the repo root after `npm run compile`:
 //   dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml
 
@@ -33,7 +33,7 @@ void Check(bool ok, string label, object? got = null)
 // CreateFromYamlAsync parses the full document — kind/name/description/instructions
 // AND the model: + tools: blocks. A malformed model or function-tool shape throws
 // during load, so reaching this point already validates the emitted model/tool YAML.
-Check(agent is ChatClientAgent, "loads as ChatClientAgent via real CreateFromYamlAsync", agent.GetType().Name);
+Check(agent is ChatClientAgent, "loads as ChatClientAgent via Microsoft's CreateFromYamlAsync", agent.GetType().Name);
 var cca = agent as ChatClientAgent;
 Check(cca?.Name == "WeatherBot", "name round-trips", cca?.Name);
 Check(cca?.Description == "Answers weather questions for a given location.", "description round-trips", cca?.Description);

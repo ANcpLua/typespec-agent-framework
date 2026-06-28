@@ -5,8 +5,8 @@ using AgentFramework;
 /**
  * Sample D1 prompt agent. `npm run compile` emits
  * `generated/maf/weather-bot.agent.yaml`, which the .NET round-trip harness
- * (`tests/MafRoundTrip`) loads through Microsoft's real
- * `ChatClientPromptAgentFactory.CreateFromYamlAsync` (PRD Law §3).
+ * (`tests/MafRoundTrip`) loads through Microsoft's
+ * `ChatClientPromptAgentFactory.CreateFromYamlAsync`.
  */
 @agent("WeatherBot", "Answers weather questions for a given location.")
 @instructions("You are a helpful weather assistant. Be concise.")

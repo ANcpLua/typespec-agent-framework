@@ -1,8 +1,9 @@
 # Contributing notes
 
 `@ancplua/typespec-maf` — TypeSpec emitters for Microsoft Agent Framework's
-declarative agent and workflow YAML, verified by round-trip tests against the real
-MAF loaders. See [`docs/PRD.md`](docs/PRD.md) for the design and roadmap.
+declarative agent and workflow YAML, verified by loading the output through
+Microsoft's own agent and workflow loaders. See [`docs/PRD.md`](docs/PRD.md) for
+the design and roadmap.
 
 ## Layout
 
@@ -22,7 +23,7 @@ MAF loaders. See [`docs/PRD.md`](docs/PRD.md) for the design and roadmap.
 npm install
 npm run compile          # emit agent + workflow YAML from main.tsp
 npm run lint             # compile with --warn-as-error
-npm run test:roundtrip   # D1 agent round-trip (real CreateFromYamlAsync)
+npm run test:roundtrip   # D1 agent round-trip (Microsoft's CreateFromYamlAsync)
 npm run test:workflows   # D2 workflow equivalence + DeclarativeWorkflowBuilder build
 npm run test:powerfx     # PowerFx reference matrix
 npm run test:actions     # generated action lib compiles + spot-check
