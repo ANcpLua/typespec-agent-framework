@@ -37,7 +37,7 @@ for M365 Copilot; this applies the same approach to the Agent Framework.
 ## Status
 
 - [x] **D1 — prompt-agent YAML** — `@agent` / `@instructions` / `@useModel` / `@tool`,
-      `maf-agent-yaml` emitter, round-trip via `CreateFromYamlAsync`.
+      round-trip via `CreateFromYamlAsync`.
 - [x] **Action-shape generator** — `tools/maf-model-gen` reflects over the pinned
       ObjectModel into `generated/maf-actions.gen.tsp`.
 - [x] **D2 — workflow YAML** — `@workflow`, reference-id validation, PowerFx reference
@@ -51,9 +51,9 @@ for M365 Copilot; this applies the same approach to the Agent Framework.
 ```text
 ObjectModel (pinned MAF pkg) ──► tools/maf-model-gen ──► generated/maf-actions.gen.tsp
                                                               │
- lib/  @agent @workflow @trigger @tool @useModel              │ (D2 action shapes)
+ lib/  @agent @instructions @useModel @tool @workflow          │ (D2 action shapes)
        powerfx reference validation                           ▼
- emitters/ maf-agent-yaml (D1)   maf-workflow-yaml (D2)   maf-hosted (D3, planned)
+ lib/src/index.ts emitter — *.agent.yaml (D1)   *.workflow.yaml (D2)   maf-hosted (D3, planned)
        │                              │
        ▼                              ▼
  ChatClientPromptAgentFactory   DeclarativeWorkflowBuilder   ◄── round-trip test harnesses

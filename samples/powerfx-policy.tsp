@@ -2,7 +2,7 @@ import "@ancplua/typespec-maf";
 
 using AgentFramework;
 
-// POLICY eval (PR-4): a PowerFx expression references the `Bot` scope, which is not in
+// POLICY eval: a PowerFx expression references the `Bot` scope, which is not in
 // the powerfx-scope rule's allowed set. This is a configurable WARNING (not an error):
 // compiling succeeds, but the linter reports `@ancplua/typespec-maf/powerfx-scope`.
 // Verified by tools/powerfx-eval.mjs. Not imported by main.tsp (which would fail

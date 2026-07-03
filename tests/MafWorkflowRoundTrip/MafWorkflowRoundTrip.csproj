@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- D2 round-trip gate (PRD Law §3). Loads each TypeSpec-emitted workflow YAML
+  <!-- D2 round-trip gate. Loads each TypeSpec-emitted workflow YAML
        through Microsoft's real DeclarativeWorkflowBuilder.Build. Inherits net10.0
        from Directory.Build.props; MAF version from versions.props. -->
 

@@ -1,11 +1,11 @@
 // Copyright (c) 2026 ancplua
 // SPDX-License-Identifier: MIT
 //
-// PR-3 equivalence gate: each TypeSpec-emitted workflow YAML must be SEMANTICALLY
+// Equivalence gate: each TypeSpec-emitted workflow YAML must be SEMANTICALLY
 // equivalent (same parsed tree, modulo key order / whitespace / the hand-authored
 // blank lines) to the corresponding Microsoft.Agents.AI.Workflows.Declarative test
-// fixture. Byte-equivalence is relaxed to parsed-tree equivalence per PRD §7 (YAML
-// serializer freedom); action order IS significant and is compared positionally.
+// fixture. Byte-equivalence is relaxed to parsed-tree equivalence (YAML serializer
+// freedom); action order IS significant and is compared positionally.
 //
 // Run: node tools/workflow-equiv.mjs   (or npm run test:workflows)
 

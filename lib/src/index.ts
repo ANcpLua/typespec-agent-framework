@@ -19,10 +19,10 @@ import {
 import { stringify as toYaml } from "yaml";
 
 /**
- * `@ancplua/typespec-maf` — TypeSpec decorators and emitters that produce Microsoft
+ * `@ancplua/typespec-maf` — TypeSpec decorators and an emitter that produce Microsoft
  * Agent Framework declarative YAML: prompt agents (D1 — `@agent` / `@instructions` /
- * `@useModel` / `@tool` → maf-agent-yaml) and workflows (D2 — `@workflow` →
- * maf-workflow-yaml). Every artifact is gated by a .NET round-trip through Microsoft's
+ * `@useModel` / `@tool`) and workflows (D2 — `@workflow`). Every artifact is gated
+ * by a .NET round-trip through Microsoft's
  * own loaders (`ChatClientPromptAgentFactory.CreateFromYamlAsync`,
  * `DeclarativeWorkflowBuilder.Build`).
  */
@@ -55,7 +55,7 @@ export const $lib = createTypeSpecLibrary({
     state: {
         agent: { description: "Namespaces marked as MAF prompt agents (@agent)" },
         instructions: { description: "Agent system instructions (@instructions)" },
-        model: { description: "Agent model configuration (@model)" },
+        model: { description: "Agent model configuration (@useModel)" },
         tool: { description: "Operations marked as function tools (@tool)" },
         workflow: { description: "Namespaces marked as MAF declarative workflows (@workflow)" },
     },
@@ -113,7 +113,7 @@ setTypeSpecNamespace("AgentFramework", $agent, $instructions, $useModel, $tool, 
  * shape Microsoft's `ChatClientPromptAgentFactory.CreateFromYamlAsync` parses
  * (verified against `Microsoft.Agents.AI.Declarative` source). YAML key order is
  * fixed and `yaml.stringify` is deterministic, so output is byte-stable across
- * compiles (PR-1 determinism gate).
+ * compiles.
  */
 export async function $onEmit(context: EmitContext): Promise<void> {
     if (context.program.compilerOptions.dryRun) return;
@@ -144,7 +144,7 @@ export async function $onEmit(context: EmitContext): Promise<void> {
 }
 
 /**
- * Hard workflow invariants (PRD Law §2: a broken graph is never merely a warning).
+ * Hard workflow invariants: a broken graph is a compile error, never merely a warning.
  * Trigger-without-id is already a type error (TriggerSpec.id is required); here we
  * catch duplicate action ids and unresolved action references — the unknown-reference
  * defect class that MAF only fails on at load.

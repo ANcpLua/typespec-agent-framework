@@ -1,7 +1,7 @@
 // Copyright (c) 2026 ancplua
 // SPDX-License-Identifier: MIT
 //
-// PR-3 negative eval: a workflow with an unresolved action reference must be a
+// Negative eval: a workflow with an unresolved action reference must be a
 // COMPILE error (MAF-003), where raw MAF only fails at load. Asserts that compiling
 // samples/negative/unknown-reference.tsp FAILS with the expected diagnostic.
 //

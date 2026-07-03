@@ -23,8 +23,7 @@ extern dec instructions(target: Namespace, text: valueof string);
  * Model configuration for the agent (D1 `model:`).
  *
  * Named `@useModel` (not `@model`): `model` is a reserved TypeSpec keyword, so it
- * cannot be a decorator identifier. The PRD §3 working name `@model` collides with
- * the language; `@useModel` is the closest legal spelling. [Δ: PRD-named `@model`]
+ * cannot be a decorator identifier.
  */
 extern dec useModel(target: Namespace, config: valueof ModelConfig);
 
@@ -47,8 +46,7 @@ model ModelConfig {
 }
 
 /**
- * D1 `model.options:` block. A pragmatic subset for the PR-1 vertical slice;
- * the full option surface expands in later PRs.
+ * D1 `model.options:` block. A pragmatic subset of MAF's inference-option surface.
  */
 model ModelOptions {
   temperature?: float32;
@@ -64,7 +62,7 @@ model ModelOptions {
  * Declares a namespace as a Microsoft Agent Framework declarative workflow
  * (dialect D2). `tsp compile` emits a `kind: Workflow` YAML loadable through
  * Microsoft's `DeclarativeWorkflowBuilder.Build`. Action shapes are the
- * generated `AgentFramework.Actions.*` models (PR-2); `$onValidate` enforces the
+ * generated `AgentFramework.Actions.*` models; `$onValidate` enforces the
  * hard invariants (unique ids, references resolve).
  */
 extern dec workflow(target: Namespace, spec: valueof WorkflowSpec);
