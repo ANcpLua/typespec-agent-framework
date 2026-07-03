@@ -1,7 +1,7 @@
 // Copyright (c) 2026 ancplua
 // SPDX-License-Identifier: MIT
 //
-// PR-4 eval matrix for PowerFx reference validation:
+// Eval matrix for PowerFx reference validation:
 //   1. valid refs    -> main.tsp compiles clean (no MAF-004, no scope warning)
 //   2. unknown ref   -> samples/negative/powerfx-unknown-var.tsp is a COMPILE error (MAF-004)
 //   3. policy scope  -> samples/powerfx-policy.tsp emits a configurable WARNING (powerfx-scope)

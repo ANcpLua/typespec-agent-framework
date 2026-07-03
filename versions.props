@@ -2,24 +2,24 @@
 
   <!-- ============================================================================
        Single source of truth for version pins across typespec-agent-framework.
-       (PRD Law §5: version pins everywhere — no floating `latest`, no `-dev` ranges.)
+       No floating `latest`, no `-dev` ranges.
 
        - TypeSpec / npm toolchain pins are authoritative in package.json; they are
          mirrored here for the .NET round-trip projects and for humans.
-       - MAF + .NET package pins are authoritative HERE and are consumed by
-         Directory.Packages.props (added with the first .NET round-trip project in
-         PR-1) and Directory.Build.props.
+       - MAF + .NET package pins are authoritative HERE and are consumed by the
+         .NET projects via Directory.Build.props.
 
        Ground truth for MAF API shapes: the local source checkout
        agent-framework-dotnet-rootsource @ 3a9f3480 (2026-06-24); the published
        Microsoft.Agents.AI.* packages are on nuget.org. Bump = pin here, regenerate,
-       review diff (PRD §2, Law §4/§5).
+       review diff.
        ============================================================================ -->
 
   <PropertyGroup Label="ToolchainPins">
     <TypeSpecVersion>1.13.0</TypeSpecVersion>
     <TypeScriptVersion>6.0.3</TypeScriptVersion>
-    <!-- @ancplua/typespec-otel-semconv — semconv-typed telemetry keys, added in PR-5. -->
+    <!-- @ancplua/typespec-otel-semconv — semconv-typed telemetry keys for the
+         telemetry milestone; pin reserved, not yet consumed by any project. -->
     <OtelSemConvVersion>1.41.0-2</OtelSemConvVersion>
   </PropertyGroup>
 
@@ -28,11 +28,11 @@
          Microsoft.Agents.AI.Workflows.Declarative) ship stable at 1.11.1; the D1
          prompt-agent loader package (Microsoft.Agents.AI.Declarative) is published
          only as a release candidate (1.11.1-rc1) — pinned explicitly, NOT a floating
-         range, so it satisfies Law §5. PR-1's round-trip references the Declarative pkg. -->
+         range. -->
     <MafPackageVersion>1.11.1</MafPackageVersion>
     <MafDeclarativeVersion>1.11.1-rc1</MafDeclarativeVersion>
     <!-- Copilot Studio / Bot Framework object model — source of truth for the D2
-         workflow action shapes (DialogAction subtypes). maf-model-gen (PR-2) reflects
+         workflow action shapes (DialogAction subtypes). tools/maf-model-gen reflects
          over this to generate generated/maf-actions.gen.tsp. Pinned to the exact
          version MAF Workflows.Declarative 1.11.1 references. -->
     <ObjectModelVersion>2026.2.4.1</ObjectModelVersion>

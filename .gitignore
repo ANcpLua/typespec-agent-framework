@@ -2,13 +2,12 @@ node_modules/
 dist/
 coverage/
 lib/dist/
-emitters/*/dist/
 
 # Local TypeSpec emitter output (runtime emit). Generated *.gen.tsp libraries
-# (PR-2 onward) are TRACKED — regenerate-don't-chase — so they are not ignored.
+# are TRACKED — regenerate-don't-chase — so they are not ignored.
 generated/maf/
 
-# .NET build outputs (round-trip test harness, PR-1+).
+# .NET build outputs (round-trip test harnesses).
 bin/
 obj/
 Artifacts/

@@ -24,7 +24,7 @@ namespace WeatherBot {
 }
 
 // ---------------------------------------------------------------------------
-// D2 sample workflows (PR-3). Each reproduces a Microsoft.Agents.AI.Workflows.
+// D2 sample workflows. Each reproduces a Microsoft.Agents.AI.Workflows.
 // Declarative.UnitTests/Workflows/*.yaml fixture from TypeSpec; `npm run compile`
 // emits generated/maf/<name>.workflow.yaml, semantically equivalent to the MAF
 // fixture and loadable via DeclarativeWorkflowBuilder.Build (tests/MafWorkflowRoundTrip).

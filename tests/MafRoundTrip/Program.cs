@@ -1,7 +1,7 @@
 // Copyright (c) 2026 ancplua
 // SPDX-License-Identifier: MIT
 //
-// D1 round-trip gate (PRD Law §3): the TypeSpec-emitted agent YAML must load
+// D1 round-trip gate: the TypeSpec-emitted agent YAML must load
 // through Microsoft's ChatClientPromptAgentFactory.CreateFromYamlAsync.
 // Run from the repo root after `npm run compile`:
 //   dotnet run --project tests/MafRoundTrip -- generated/maf/weather-bot.agent.yaml

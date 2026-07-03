@@ -1,7 +1,7 @@
 // Copyright (c) 2026 ancplua
 // SPDX-License-Identifier: MIT
 //
-// PR-2 spot-check eval: pins the generated D2 action shapes against the action
+// Spot-check eval: pins the generated D2 action shapes against the action
 // kinds exercised by Microsoft's OWN workflow tests
 // (Microsoft.Agents.AI.Workflows.Declarative.UnitTests/Workflows/*.yaml @
 // agent-framework-dotnet-rootsource 3a9f3480). Each oracle kind must appear as a
@@ -15,7 +15,7 @@ import { resolve } from "node:path";
 const GEN = resolve(process.argv[2] ?? "generated/maf-actions.gen.tsp");
 
 // Action kinds that appear in the package's own Workflows/*.yaml fixtures AND are
-// concrete DialogAction subtypes (well above the PRD's ≥5 spot-check minimum).
+// concrete DialogAction subtypes.
 const ORACLE = [
     "SetVariable",
     "SetTextVariable",

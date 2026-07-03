@@ -40,7 +40,7 @@ see [`docs/PRD.md`](docs/PRD.md).
 
 ```bash
 npm run compile          # emit agent + workflow YAML from main.tsp
-npm run test:roundtrip   # D1: load agent YAML through Microsoft's loader (Law §3)
+npm run test:roundtrip   # D1: load agent YAML through Microsoft's loader
 npm run test:workflows   # D2: semantic-equiv to MAF fixtures + DeclarativeWorkflowBuilder build
 npm run test:negative    # D2: unknown action reference is a compile error (MAF-003)
 npm run test:powerfx     # D2: PowerFx ref matrix — valid / unknown-ref error / policy warning

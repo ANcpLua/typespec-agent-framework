@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- D1 round-trip gate (PRD Law §3). Inherits net10.0 + Nullable + ImplicitUsings
+  <!-- D1 round-trip gate. Inherits net10.0 + Nullable + ImplicitUsings
        from the repo Directory.Build.props; the MAF Declarative version comes from
        versions.props. Loads the TypeSpec-emitted YAML through Microsoft's real
        ChatClientPromptAgentFactory.CreateFromYamlAsync. -->
