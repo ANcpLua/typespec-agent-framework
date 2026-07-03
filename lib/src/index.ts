@@ -19,7 +19,7 @@ import {
 import { stringify as toYaml } from "yaml";
 
 /**
- * `@ancplua/typespec-maf` — TypeSpec decorators and emitter that produce Microsoft
+ * `@ancplua/typespec-maf` — TypeSpec decorators and an emitter that produce Microsoft
  * Agent Framework declarative YAML: prompt agents (D1 — `@agent` / `@instructions` /
  * `@useModel` / `@tool`) and workflows (D2 — `@workflow`). Every artifact is gated
  * by a .NET round-trip through Microsoft's
