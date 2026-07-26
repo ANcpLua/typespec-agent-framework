@@ -5,6 +5,13 @@ declarative agent and workflow YAML, verified by loading the output through
 Microsoft's own agent and workflow loaders. See [`docs/PRD.md`](docs/PRD.md) for
 the design and roadmap.
 
+## Place in the 1.0.0 taxonomy: none
+
+`@ancplua/typespec-maf` is a lab targeting Microsoft Agent Framework, not a qyl
+component. It appears in no row of the component taxonomy in
+`qyl-workspace/AGENTS.md` and is not part of the `Qyl.Telemetry.*` /
+`Qyl.Collector.*` rename. Do not apply the launch naming here.
+
 ## Layout
 
 - `lib/` — the `@ancplua/typespec-maf` library: `src/index.ts` (decorators, the
