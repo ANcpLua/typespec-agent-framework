@@ -9,7 +9,7 @@ the design and roadmap.
 
 `@ancplua/typespec-maf` is a lab targeting Microsoft Agent Framework, not a qyl
 component. It appears in no row of the component taxonomy in
-`qyl-workspace/AGENTS.md` and is not part of the `Qyl.Telemetry.*` /
+`qyl/ARCHITECTURE-1.0.0.md` and is not part of the `Qyl.Telemetry.*` /
 `Qyl.Collector.*` rename. Do not apply the launch naming here.
 
 ## Layout
